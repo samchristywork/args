@@ -22,3 +22,26 @@ void add_arg(char short_name, const char *long_name, const char *description,
     exit(EXIT_FAILURE);
   }
 }
+
+void usage(const char *program_name) {
+  fprintf(stderr, "Usage: %s [options]\n", program_name);
+  fprintf(stderr, "\n");
+  fprintf(stderr, "Options:\n");
+  for (int i = 0; i < 52; i++) {
+    if (args[i].long_name != NULL) {
+      fprintf(stderr, "  ");
+      fprintf(stderr, "-%c", i < 26 ? 'a' + i : 'A' + i - 26);
+      fprintf(stderr, ", ");
+      fprintf(stderr, "--%s:", args[i].long_name);
+      for (size_t j = 0; j < max_name_len - strlen(args[i].long_name); j++) {
+        fprintf(stderr, " ");
+      }
+      fprintf(stderr, "  %s\n", args[i].description);
+    }
+  }
+  exit(EXIT_FAILURE);
+}
+
+void version(const char *versionString, const char *licenseString) {
+  printf("%s\n\n%s\n", versionString, licenseString);
+}
