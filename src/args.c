@@ -45,3 +45,31 @@ void usage(const char *program_name) {
 void version(const char *versionString, const char *licenseString) {
   printf("%s\n\n%s\n", versionString, licenseString);
 }
+
+Arg get_arg_by_short_name(char short_name) {
+  if (short_name >= 'a' && short_name <= 'z') {
+    return args[short_name - 'a'];
+  } else if (short_name >= 'A' && short_name <= 'Z') {
+    return args[short_name - 'A' + 26];
+  } else {
+    fprintf(stderr, "Invalid short name: %c\n", short_name);
+    exit(EXIT_FAILURE);
+  }
+}
+
+bool match_short_name(char short_name, char *arg) {
+  if (strlen(arg) != 2) {
+    return false;
+  }
+
+  return strlen(arg) == 2 && arg[0] == '-' && arg[1] == short_name;
+}
+
+bool match_long_name(const char *long_name, char *arg) {
+  if (strlen(arg) <= 2) {
+    return false;
+  }
+
+  return strlen(arg) > 2 && arg[0] == '-' && arg[1] == '-' &&
+         strcmp(long_name, arg + 2) == 0;
+}
