@@ -73,3 +73,21 @@ bool match_long_name(const char *long_name, char *arg) {
   return strlen(arg) > 2 && arg[0] == '-' && arg[1] == '-' &&
          strcmp(long_name, arg + 2) == 0;
 }
+
+int get_arg_int(int argc, char *argv[], char short_name, int default_value) {
+  Arg arg = get_arg_by_short_name(short_name);
+  for (int i = 1; i < argc; i++) {
+    if (match_short_name(short_name, argv[i]) ||
+        match_long_name(arg.long_name, argv[i])) {
+      if (i + 1 < argc) {
+        int ret = atoi(argv[i + 1]);
+        if (ret == 0) {
+          return default_value;
+        } else {
+          return ret;
+        }
+      }
+    }
+  }
+  return default_value;
+}
